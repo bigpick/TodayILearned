@@ -6,7 +6,7 @@
 title: Today I Learned...
 email:
 description: "A Software Engineer's personal blog centered around learning."
-url: # the base hostname & protocol for your site
+url: https://bigpick.github.io/TodayILearned
 keywords: ["blog", "jekyll", "coding", "programming", "software", "education"]
 
 #
