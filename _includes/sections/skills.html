@@ -1,0 +1,34 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<h1><span data-i18n="skills.my_skills">Skills</span></h1>
+<canvas id="{{ site.data.index.skills.id }}" height="500" width="500"></canvas>
+<script>
+    var ctx = document.getElementById("{{ site.data.index.skills.id }}");
+    var data = {
+    labels: "{{ site.data.index.skills.aspects }}".split(","),
+    datasets: [{
+        label: "{{ site.data.index.skills.label }}",
+        backgroundColor: "rgba(98, 114, 164,0.2)",
+        borderColor: "#8be9fd",
+        pointBackgroundColor: "#8be9fd",
+        pointBorderColor: "#282a36",
+        pointHoverBackgroundColor: "#8be9fd",
+        pointHoverBorderColor: "#8be9fd",
+        data: [{{ site.data.index.skills.percentage }}]
+        }]
+    };
+    var myRadarChart = new Chart(ctx, {
+    type: 'radar',
+    data: data,
+    options: {
+        scale: {
+            responsive: true,
+            ticks: {min: 0, max: 100, backdropColor: "rgba(68, 71, 90, 0.0)",
+                    maxTicksLimit: 10, fontColor: "#f8f8f2"},
+            lineArc: false,
+            pointLabels: {fontSize: 15, fontColor: "#ff79c6"},
+        },
+        scaleFontSize: 0,
+        legend: {display: false},
+    }
+    });
+</script>

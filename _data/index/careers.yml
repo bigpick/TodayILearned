@@ -1,0 +1,16 @@
+# careers section data
+# if you don't have language feature(language.yml is empty), ignore "i18n" items
+- name: IBM
+  link: https://www.ibm.com/us-en/?ar=1
+  date: September 2019 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: Staff Software Engineer
+
+- name: IBM
+  link: https://www.ibm.com/us-en/?ar=1
+  date: August 2018 - September 2019
+  job: Software Engineer
+
+- name: IBM
+  link: https://www.ibm.com/us-en/?ar=1
+  date: June 2017 - August 2017
+  job: Integration Research Intern

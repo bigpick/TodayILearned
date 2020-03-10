@@ -1,0 +1,7 @@
+- name: TIL (Here!)
+  descr: "Today I Learned... is my personal site I started to track the various things I encounter/learn among my daily work. I'd like to think that one of the best aspects of any good professional is not just the ability to learn, but the desire to do so. I tend to get interested in a lot of 'self-education' projects, but hey, what can I say? They all look so cool!"
+  image: pong.png
+  github: https://github.com/bigpick/personal_site
+
+- name: ???
+  descr: "Help me! Know of any interesting projects, or something that you think looks cool? Drop me a note to look into it. I'm always looking for more interesting things to learn."

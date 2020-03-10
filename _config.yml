@@ -1,0 +1,71 @@
+#
+###################################
+# Site wide configuration
+####################################
+#
+title: Today I Learned...
+email:
+description: "A Software Engineer's personal blog centered around learning."
+url: # the base hostname & protocol for your site
+keywords: ["blog", "jekyll", "coding", "programming", "software", "education"]
+
+#
+###################################
+# Jekyll configuration
+####################################
+#
+timezone:          America/New_York
+markdown:          kramdown
+highlighter:       rouge
+excerpt_separator: <!--more-->
+permalink:         /articles/:year-:month/:title
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+#
+###################################
+# Site Owner configuration
+####################################
+#
+owner:
+  name: Today I Learned...
+  avatar: dracula_head.svg
+  job:
+  bio: "A Software Engineer's personal blog centered around learning."
+  email:
+  disqus-shortname:
+  twitter: #username
+  facebook: #username
+  google:
+    plus: #username
+    analytics:
+    verify:
+    ad-client:
+    ad-slot:
+  bing-verify:
+  github: "bigpick"
+  gitlab: "bigpick"
+  stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
+  linkedin: "george-pickering-59524a116"
+  skype: #username
+  xing: #username
+  instagram: #username
+  lastfm: #username
+  tumblr: #username
+  pinterest: #username
+  foursquare: #username
+  steam: #username
+  dribbble: #username
+  youtube: #username
+  soundcloud: #username
+  weibo: #username
+  flickr: #username
+  500px: #username
+  codepen: #username
+  reddit: #username
+  telegram: #username

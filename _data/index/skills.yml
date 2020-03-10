@@ -1,0 +1,6 @@
+# skills section data
+
+label: Ability
+id : cs
+aspects: Learning, Bash, Java, Scala, SecOps, Python
+percentage: 80, 60, 45, 30, 25, 60
