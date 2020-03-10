@@ -136,11 +136,26 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(40,42,54,1);
+    background: rgba(139,233,253,1);
     -webkit-border-radius: 0px;
     border-radius: 0px;
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(40,42,54,0.2);
+}
+
+// anchor links
+.anchor {
+  visibility: hidden;
+  color: #f8f8f2;
+}
+
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+  visibility: visible;
 }

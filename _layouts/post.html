@@ -33,7 +33,7 @@ layout: default
   </header>
 
   <article class="post-content">
-    {{ content }}
+    {% include anchor_headings.html html=content anchorBody="⚓" anchorClass="anchor" %}
   </article>
 </div>
 
