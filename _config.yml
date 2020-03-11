@@ -34,7 +34,7 @@ kramdown:
 #
 owner:
   name: Today I Learned...
-  avatar: dracula_head.svg
+  avatar: til_logo.svg
   job:
   bio: "A Software Engineer's personal blog centered around learning."
   email:
