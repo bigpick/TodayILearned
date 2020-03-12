@@ -266,7 +266,7 @@ $r12 0x00000000  $sp 0xbefff7e0   $lr 0x00000000   $pc 0x00008054
 
 ### SP points to different places depending on instruction mode!
 
-Intead, `R0` gets the value of `0x8058`, which is actually two instructions ahead of where we broke at `0x8054 <_start> mov r0, pc`.
+Instead, `R0` gets the value of `0x8058`, which is actually two instructions ahead (8 bytes) of where we broke at `0x8054 <_start> mov r0, pc`.
 
 So depending on the mode, `pc` will actually end up containing either the address two instructions ahead (`+8`) or one (`+4`); the latter only being in **Thumb mode**.
 
@@ -328,7 +328,7 @@ So, looks like it's used to switch between the two modes (ARM vs Thumb). Reading
 	".code   16\n"
 ```
 
-Is a clear indication that we're now in 16-byte/Thumb mode. So now, from before, our `PC` register will only by `+4` and not `+8`.
+Is a clear indication that we're now in 16-bit/Thumb mode. So now, from before, our `PC` register will only by `+4` and not `+8`.
 
 From the above, it looks like:
 * We go into Thumb mode
@@ -397,7 +397,7 @@ So,
 0x00008d28 <+8>:	mov	r3, lr
 ```
 
-Is where we're setting the return value equal to the link register. If we look at the disas of `main` where we call `key3()`, we can see the function we're going to execute after key3, and it's address:
+Is where we're setting the return value equal to the link register. If we look at the disas of `main` where we call `key3()`, we can see the function we're going to execute after key3, and it's address, so we know what `LR` should have inside key3:
 
 ```
 ...
