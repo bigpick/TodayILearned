@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Inverse of XOR"
 excerpt: "... is XOR, duh!"

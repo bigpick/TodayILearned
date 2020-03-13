@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Download, set up, and introduction to Scala"
 excerpt: "Following along with the 'getting started with scala and sbt on the command line' from the Scala docs."
@@ -8,7 +9,7 @@ categories: [Scala]
 This follows the procedure mentioned in the [scala docs for getting started with scala, sbt, and the command line](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html).
 
 ## Installation
-### Java version check
+## Java version check
 (I already had Java installed on my machine, so I can check the version; if you need to download it, see [the download pages](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)).
 
 Already have Java8 JDK installed:
@@ -17,7 +18,7 @@ javac -version
 javac 1.8.0_231
 ```
 
-### Install `stb`
+## Install `stb`
 
 From the sbt documentation [here](https://www.scala-sbt.org/):
 
@@ -32,7 +33,7 @@ To reinstall 1.3.8_1, run `brew reinstall sbt`
 ```
 
 ## Create your first project
-### `cd` to an empty folder
+## `cd` to an empty folder
 
 We want to move to a new empty folder which will be the home for our working project. For me, that is:
 
@@ -40,7 +41,7 @@ We want to move to a new empty folder which will be the home for our working pro
 cd ....Downloads/github/ScalaFundamentals/src
 ```
 
-### Pull hello world template from git
+## Pull hello world template from git
 
 Now, we can run a command with `sbt` to pull a [project template using the `sbt new` syntax](https://www.scala-sbt.org/1.x/docs/sbt-new-and-Templates.html).
 
@@ -62,7 +63,7 @@ name [Hello World template]: hello-world
 Template applied in ..../Downloads/github/ScalaFundamentals/src/./hello-world
 ```
 
-#### Let’s take a look at what just got generated
+### Let’s take a look at what just got generated
 
 ```bash
 src
@@ -90,7 +91,7 @@ So, from our fresh `src` directory we see the new project we pulled and then whe
 
 > After you build your project, sbt will create more `target` directories for generated files. You can ignore these.
 
-### Running the project
+## Running the project
 
 `cd` into hello-world:
 
@@ -133,7 +134,7 @@ sbt:hello-world>
 
 Neat, it printed out `Hello, World!`. I hit enter to break out of the continuous `~run`.
 
-### Modifying the code
+## Modifying the code
 Open the file `src/main/scala/Main.scala` in your favorite text editor.
 
 Change `“Hello, World!”` to `“Hello, you.”` (or whatever you want printed)
@@ -160,7 +161,7 @@ Hello, you.
 
 You can continue to make changes and see the results automatically displayed in the console. Cool.
 
-### Adding a dependency
+## Adding a dependency
 Let’s look at [how to use published libraries](https://www.scala-sbt.org/1.x/docs/Library-Dependencies.html) to add extra functionality to our apps.
 
 Open up our project's `build.sbt` and add the following line:
@@ -179,7 +180,7 @@ import scala-parse-combinators._
 
 You can find more published libraries on [Scaladex](https://index.scala-lang.org/), the Scala library index, where you can also copy the above dependency information for pasting into your `build.sbt` file.
 
-### Next steps
+## Next steps
 Continue to the next tutorial in the getting started with sbt series, and learn about [testing Scala code with sbt in the command line](https://docs.scala-lang.org/getting-started/sbt-track/testing-scala-with-sbt-on-the-command-line.html).
 
 _or_:

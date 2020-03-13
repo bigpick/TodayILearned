@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "UTCTF Live 2020 Writeups"
 excerpt: "Writeups for various challenges I solved during the UTCTF capture the flag competition."
@@ -18,7 +19,7 @@ categories: [Capture The Flag]
 
 These are writeups to challenges I solved for this CTF. Points next to the name were what they were worth when I solved it. They are now all 50 points. I tried to also keep a copy of each referenced "download XXXX" file for a challenge in a dedicated [files](https://github.com/bigpick/UTCTF-2020/tree/master/files) directory.
 
-### Solved
+## Solved
 
 | Binary Exploitation      | Networking      | Reverse Engineering      | Web    | Crypto    | Forensics|
 |--------------------------|-----------------|--------------------------|--------|-----------|----------|
@@ -39,7 +40,7 @@ These are writeups to challenges I solved for this CTF. Points next to the name 
 
 # Binary Exploitation
 
-### bof -- 50 points
+## bof -- 50 points
 > nc binary.utctf.live 9002
 
 And a download: `bof_pwnable`.
@@ -276,7 +277,7 @@ Here, the random 8 bytes are `... +b'\xa2\xacvm\xeeU\x0f\xc0'+ ...` which I gene
 >>> secrets.token_bytes(8)
 ```
 
-#### Using pwntools
+### Using pwntools
 For educational purposes, I wanted to write this in python using `pwntools`. This is what it ended up being:
 
 ```python
@@ -318,7 +319,7 @@ None :(
 
 # Reverse Engineering
 
-### [basics] reverse engineering -- 50
+## [basics] reverse engineering -- 50
 > I know there's a string in this binary somewhere.... Now where did I leave it?
 
 Download `calc`, then check `strings`:
@@ -341,7 +342,7 @@ None :(
 
 # Cryptography
 
-### [basics] crypto -- 50
+## [basics] crypto -- 50
 > Can you make it through all of the encodings?
 
 Download the file: `binary.txt`.
@@ -441,7 +442,7 @@ Bingo. Flag is `utflag{n0w_th4ts_wh4t_i_c4ll_crypt0}`.
 # Forensics
 
 
-### Sanity Check -- 1
+## Sanity Check -- 1
 > The flag is utflag{this_is_the_flag}! Welcome to UTCTF!
 
 Flag is `utflag{this_is_the_flag}!`
@@ -450,7 +451,7 @@ Flag is `utflag{this_is_the_flag}!`
 &nbsp;
 ---
 
-### Observe Closely -- 50
+## Observe Closely -- 50
 > A simple image with a couple of twists...
 
 Download the attachment, `Griffith_Observatory.png`. Opening it up, looks like a normal image.
@@ -503,7 +504,7 @@ Flag is `utflag{2fbe9adc2ad89c71da48cabe90a121c0}`.
 &nbsp;
 ---
 
-### [basics] forensics -- 50
+## [basics] forensics -- 50
 > My friend said they hid a flag in this picture, but it's broken! Now that I think about it, I don't even know if it really is a picture...
 
 Download the attachment `secret.jpeg`.
@@ -529,7 +530,7 @@ Flag is `utflag{fil3_ext3nsi0ns_4r3nt_r34l}`.
 &nbsp;
 ---
 
-### Zero -- 1858
+## Zero -- 1858
 > This file seems to be too large given how much text it contains, but I can find zero evidence of the flag. Maybe you'll have better luck than me?
 
 * Forensics
@@ -558,7 +559,7 @@ Flag is `utflag{whyNOT@sc11_4927aajbqk14}`.
 &nbsp;
 ---
 
-### Spectre -- 50
+## Spectre -- 50
 > I found this audio file, but I don't think it's any song I've ever heard... Maybe there's something else inside?
 
 We're given a download, `song.wav`.
@@ -586,7 +587,7 @@ Flag is: `utflag{sp3tr0gr4m0ph0n3}`.
 &nbsp;
 ---
 
-### 1 Frame per Minute -- 50
+## 1 Frame per Minute -- 50
 > I recently received this signal transmission known as SSTV in a mode called Martian? This technology is all very old so I'm not sure what to do with it. Could you help me out?
 
 We're given a download: `signals.wav`.

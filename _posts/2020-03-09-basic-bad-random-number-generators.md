@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Basic Bad 'Random' Number Generator Vulnerability"
 excerpt: "pwnable.kr challenge: random"
@@ -9,20 +10,20 @@ categories: [pwn practice]
 >
 > ssh random@pwnable.kr -p2222 (pw: guest)
 
-### Given
+## Given
 All we're given in this is a ssh login command, and it's password
 * `ssh random@pwnable.kr -p2222 (pw:guest)`
 
 The text hint implies it's going to be a vuln that has to deal with using "random" values in a program -- maybe bad/predictable seeding?
 
-### First, lets get on the box
+## First, lets get on the box
 
 ```bash
 ...
 random@pwnable:~$
 ```
 
-### Look around
+## Look around
 
 ```bash
 ...
@@ -34,7 +35,7 @@ random@pwnable:~$
 
 So, we see a `random` executable and it's source code (again, how nice).
 
-### Execute it
+## Execute it
 
 ```bash
 ./random
@@ -45,7 +46,7 @@ Wrong, maybe you should try 2^32 cases.
 
 2^32 cases -- so, sounds like it must be looking for a number, since thats the number of possible ints?
 
-### Examine (given) source
+## Examine (given) source
 
 ```c
 #include <stdio.h>
@@ -70,7 +71,7 @@ int main(){
 
 OK - one function, just `main`
 
-### `main`
+## `main`
 
 Declares an `unsigned int` for the variable `random`. Then it assings random to a "random" value using `rand()` (with no previous seed, at all, so it's just getting the default value)
 

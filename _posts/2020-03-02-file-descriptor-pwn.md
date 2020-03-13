@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "File Descriptors"
 excerpt: "pwnable.kr challenge: fd"
@@ -12,7 +13,7 @@ categories: [pwn practice]
 >
 > `ssh fd@pwnable.kr -p2222` (pw:guest)
 
-### Given
+## Given
 
 All we're given in this is a ssh login command, and it's password
 
@@ -22,7 +23,7 @@ The text hint and the title of the challenge suggest that we will be dealing wit
 * See [Wikipedia](https://en.wikipedia.org/wiki/File_descriptor).
 * See [SO "file descriptors in simple terms"](https://stackoverflow.com/questions/5256599/what-are-file-descriptors-explained-in-simple-terms) at the time of this writing the the top answer kinda sucks, so ymmv.
 
-### First, lets get on the box
+## First, lets get on the box
 
 ```bash
 ...
@@ -31,7 +32,7 @@ fd@pwnable:~$
 
 OK - we're on.
 
-### Look around
+## Look around
 
 ```bash
 fd@pwnable:~$ ls -alrt
@@ -55,7 +56,7 @@ We can ignore most of that stuff. What's interesting to us are these entries:
 -r-sr-x---   1 fd_pwn fd   7322 Jun 11  2014 fd
 ```
 
-### cat flag -- profit?
+## cat flag -- profit?
 Nope - can't do that. Notice ownership on the `flag`  file:
 
 * owner = `fd_pwn`
@@ -68,7 +69,7 @@ cat /etc/group | grep fd_pwn
 fd_pwn:x:1006:
 ```
 
-### Inspect files
+## Inspect files
 
 So that leaves us with `fd` and `fd.c`. In the above, `fd` is executable. Given the naming conventions, it would seem that `fd` is a compiled binary for the `fd.c` file.
 
@@ -81,7 +82,7 @@ fd: setuid ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically
 
 Ok, so it is an executable. Specifically, it's a `32-bit` executable, that when ran, will run as the identity of the owner of the file `... setuid ...`.
 
-### Run it
+## Run it
 
 ```bash
 fd@pwnable:~$ ./fd
@@ -93,7 +94,7 @@ learn about Linux file IO
 
 So, if you give it any old number, it just spits out a message about "go learn about linux I/O". Let's looks at what we think is the source code first.
 
-### Examine (given) source
+## Examine (given) source
 `cat fd.c` gives us:
 
 ```c
@@ -148,13 +149,13 @@ Lastly, it checks if the value in `buf` is equal to `LETMEWIN\n`, and if so, `ca
 	}
 ```
 
-### Takeaway
+## Takeaway
 
 So, we need to somehow get `buf` to have `LETMEWIN\n`. The key part here is that `buf` is getting read from whatever file descriptor is calculated based on our input minus `0x1234`.
 
 In linux, STDIN is also `fd 0`. So, if we can get our input, minus `0x1234` to be `0`, we should be able to just type the password in to the terminal, hit enter, and profit.
 
-### Python -- easy hex to dec
+## Python -- easy hex to dec
 
 Can use python to easily see what the value of `0x1234` is in decimal:
 
@@ -163,7 +164,7 @@ python -c "print(0x1234)"
 4660
 ```
 
-### Solve
+## Solve
 
 ```bash
 ./fd 4660

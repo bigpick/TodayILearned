@@ -2,17 +2,44 @@
 layout: default
 ---
 
+<!-- HTML elements for search -->
+<div id="search-container">
+  <input type="text" id="search-input" placeholder="Looking for something?" style="display:table-cell; width:100%">
+  <ul id="results-container"></ul>
+</div>
+
+<!-- script pointing to jekyll-search.js -->
+<script src="{{ site.baseurl }}/js/simple-jekyll-search.min.js"></script>
+
+<!-- Configuration -->
+<script>
+SimpleJekyllSearch({
+  searchInput: document.getElementById('search-input'),
+  resultsContainer: document.getElementById('results-container'),
+  json: '/search.json',
+  searchResultTemplate: '<li><a href="{url}">{title}</a></li>\n\t{excerpt}',
+  noResultsText: "No results found :(",
+  fuzzy: true
+})
+</script>
+<br>
 {% for post in site.posts %}
 <section class="post">
   <header class="post-header">
     <p class="post-meta">
       <span class="post-date">
-        {{ post.date | date: "%-d %b %Y" | upcase }}
+        {{ post.date | date: "%-b %d %Y" | upcase }}
       </span>
+      {% if post.author %}
+      by
+      <span class="post-author">
+        {{ site.data.authors[post.author].name }}
+      </span>
+      {% endif %}
       {% if post.categories.size > 0 %}
-      •
+      under
       {% for cat in post.categories %}
-        <a class="post-cat" href="{{ site.url }}/categories/#{{ cat }}">{{ cat }}</a>
+        <a class="post-tag" href="{{ site.url }}/categories/#{{ cat }}">{{ cat }}</a>
         {% unless forloop.last %}
         <span>/</span>
         {% endunless %}

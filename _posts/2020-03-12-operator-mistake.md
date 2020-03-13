@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Mistakes (C Operator Precedence)"
 excerpt: "pwnable.kr challenge: mistake"
@@ -15,7 +16,7 @@ categories: [pwn practice]
 >
 > ssh mistake@pwnable.kr -p2222 (pw:guest)
 
-### Given
+## Given
 All we're given in this is a ssh login command, and it's password:
 
 * `ssh mistake@pwnable.kr -p2222 (pw:guest)`
@@ -24,21 +25,21 @@ The text hint and the title of the challenge suggest that we will be dealing wit
 
 It also suggests it is based on a real event.
 
-### Read
+## Read
 * [Common Weakness Enumeration (CWE)](https://cwe.mitre.org/data/definitions/783.html) on operator precedence logical errors.
 * [C++/C Operator Precedence](https://en.cppreference.com/w/c/language/operator_precedence) table.
 
 PEMDAS people! ;)
 
 
-### First, lets get on the box
+## First, lets get on the box
 
 ```bash
 ...
 mistake@pwnable:~$
 ```
 
-### Look around
+## Look around
 
 ```bash
 ls -alrt
@@ -50,14 +51,14 @@ ls -alrt
 # ...
 ```
 
-### Inspect files
+## Inspect files
 
 ```
 file mistake
 mistake: setuid ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 2.6.24, BuildID[sha1]=ef56e67046843c3d794fda2e5842140e937dd7c6, not stripped
 ```
 
-### Run it
+## Run it
 
 ```
 mistake@pwnable:~$ ./mistake
@@ -78,7 +79,7 @@ mistake@pwnable:~$
 
 On subsequent re-runs, it seems that the bruteforce message is displayed and then requires user input to get to the input password prompt, but only after some time.
 
-### Examine (given) source
+## Examine (given) source
 
 ```c
 #include <stdio.h>
@@ -135,7 +136,7 @@ int main(int argc, char* argv[]){
 
 Two function program: main and xor.
 
-### `main()`
+## `main()`
 
 Starts off by declaring an integeger named `fd`. Then, it proceeds to set that variable to the value of opening the `password` file. But, we already see some operator precedence boo-boos:
 
@@ -229,7 +230,7 @@ The result is negated, and then passed to an `if` statement, where if true, we g
 
 
 
-### Takeaway
+## Takeaway
 
 The `password` file is useless. We completely control what the program thinks that is, since the FD it's using for that 'file' ends up being standard input. We then know that it's compared to the XOR'ed value of what we pass in at the password prompt.
 
@@ -277,10 +278,10 @@ Password OK
 Mommy, the operator priority always confuses me :(
 ```
 
-### Tl;dr
+## Tl;dr
 Use parenthesis people!!!
 
-### pwntools script
+## pwntools script
 
 See the code [here](https://github.com/bigpick/pwnable.kr/blob/master/toddlersbottle/09_mistake_code/mistake_pwn.py). Results:
 

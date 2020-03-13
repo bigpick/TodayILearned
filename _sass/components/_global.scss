@@ -159,3 +159,17 @@ h5:hover .anchor,
 h6:hover .anchor {
   visibility: visible;
 }
+
+// Search bar
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #6272a4;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #6272a4;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #6272a4;
+}

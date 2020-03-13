@@ -61,21 +61,30 @@ section.post {
 
 // Post meta
 .post-meta {
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 12px;
+  //font-weight: bold;
 	.post-date {
-		color: $secondary;
+		color: $info;
+        font-weight: bold;
 	}
 	.post-author {
-		text-transform: uppercase;
-		color: $danger;
+        font-weight: bold;
+		color: $info;
 	}
   .post-cat {
 		text-transform: uppercase;
 		color: $info;
 	}
+  .post-tag {
+		border-radius: 0.1em;
+		color: #282a36;
+        font-weight: bold;
+        font-size: 95%;
+        padding: 0.2em 0.2em;
+		text-transform: lowercase;
+	}
   .read-time {
-    color: $info;
+    color: $secondary;
   }
 }
 
@@ -100,7 +109,7 @@ a.read-more {
 #post h2 {
   margin: 2em 0 0.8em;
   padding-bottom: 0.7em;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #282a36;
 }
 #post h3 {
   margin: 1.75em 0 1.2em;

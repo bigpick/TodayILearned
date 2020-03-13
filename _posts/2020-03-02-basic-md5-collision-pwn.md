@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Basic MD5 Collisons"
 excerpt: "pwnable.kr challenge: collision"
@@ -11,7 +12,7 @@ categories: [pwn practice]
 >
 > ssh col@pwnable.kr -p2222 (pw:guest)
 
-### Given
+## Given
 All we're given in this is a ssh login command, and it's password:
 
 * `ssh col@pwnable.kr -p2222 (pw:guest)`
@@ -23,14 +24,14 @@ See:
 * [Wikipedia -- MD5](https://en.wikipedia.org/wiki/MD5)
   * [Generally - Wikipedia -- Hashing functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function)
 
-### First, lets get on the box
+## First, lets get on the box
 
 ```bash
 ...
 col@pwnable:~$
 ```
 
-### Look around
+## Look around
 
 ```bash
 col@pwnable:~$ ls -alrt
@@ -55,7 +56,7 @@ We can ignore most of that stuff. What's interesting to us are these entries:
 
 Oh, a `flag` file. Too bad, see [cat flag -- profit?](./file-descriptor-pwn#cat-flag--profit) from the first challenge.
 
-### Inspect files
+## Inspect files
 
 So that leaves us with `col` and `col.c`. In the `ls -alrt` above, `col` is executable. Given the naming conventions, it would seem that `col` is a compiled binary for the `col.c` file.
 
@@ -78,7 +79,7 @@ It is a `32-bit` executable, compiled for a **Little Endian** (`LSB`) machine, a
 
 The `not stripped` is a reference to the fact that when compiled, extra debug information not necesarry for the execution of the file (aka `symbol table`). See [the manpage for strip](https://linux.die.net/man/1/strip) for more info on options.
 
-### Run it
+## Run it
 
 ```bash
 ./col
@@ -97,7 +98,7 @@ wrong passcode.
 
 Time to look at the source.
 
-### Examine (given) source
+## Examine (given) source
 `cat col.c` gives us:
 
 ```c
@@ -155,7 +156,7 @@ Next, the meat and potatoes. It checks if `hashcode` (which is hardcoded to be `
 	if(hashcode == check_password( argv[1] )){
 ```
 
-### `check_password`
+## `check_password`
 
 So, in `main` we're calling `check_password(argv[1])`. Note the input argument type in `check_password`:
 
@@ -194,12 +195,12 @@ That is, for each iteration, it is adding the value at `ip[i]` to the resulting 
 
 This `res` is then returned back to main, and checked against `hashcode`.
 
-### Takeaway
+## Takeaway
 
 We need to get the loop in `check_password` to end up returning a `res` that is equal to the magic value, `0x21DD09EC`.
 
 
-### Python -- easy hex to dec
+## Python -- easy hex to dec
 
 Can use python to easily see what the value of `0x21DD09EC` is in decimal:
 

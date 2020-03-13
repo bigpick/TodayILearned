@@ -27,6 +27,18 @@ kramdown:
   toc_levels: 1..6
   enable_coderay: false
 
+
+#
+###################################
+# Jekyll Plugins
+####################################
+#
+plugins:
+  - jekyll-gist
+  - jekyll-paginate
+  - jemoji
+  - jekyll-seo-tag
+
 #
 ###################################
 # Site Owner configuration
@@ -43,7 +55,7 @@ owner:
   facebook: #username
   google:
     plus: #username
-    analytics:
+    analytics: UA-160596583-1
     verify:
     ad-client:
     ad-slot:
@@ -69,3 +81,5 @@ owner:
   codepen: #username
   reddit: #username
   telegram: #username
+
+exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md"]

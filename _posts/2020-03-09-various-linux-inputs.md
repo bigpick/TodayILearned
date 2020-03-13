@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Using Various Linux Input systems in a single executable"
 excerpt: "pwnable.kr challenge: input"
@@ -9,19 +10,19 @@ categories: [pwn practice]
 >
 > ssh input2@pwnable.kr -p2222 (pw:guest)
 
-### Given
+## Given
 All we're given in this is a ssh login command, and it's password
 
 * `ssh input2@pwnable.kr -p2222 (pw:guest)`
 
-### First, lets get on the box
+## First, lets get on the box
 
 ```
 ...
 input2@pwnable:~$
 ```
 
-### Look around
+## Look around
 
 ```bash
 ...
@@ -31,7 +32,7 @@ input2@pwnable:~$
 ...
 ```
 
-### Execute it
+## Execute it
 
 ```
 ./input
@@ -51,7 +52,7 @@ Just give me correct inputs then you will get the flag :)
 
 We need to give it _specific_ input. Time to look at the source.
 
-### Examine (given) source
+## Examine (given) source
 
 ```c
 #include <stdio.h>
@@ -125,13 +126,13 @@ int main(int argc, char* argv[], char* envp[]){
 
 Alright, one function: `main`.
 
-### `main`
+## `main`
 
 Starts off by printing us a banner welcome message we already saw before.
 
 Then it has 5 "stages", where each stage is broken into a commented header. So, we're going to have to satisfy each section, and once we do, get a system call to `cat` the flag.
 
-### Stage 1 -- argv
+## Stage 1 -- argv
 
 So here, the first check makes sure that `argc` is exactly equal to 100, otherwise we quit.
 
@@ -213,7 +214,7 @@ Stage 1 clear!
 ```
 Ok - on to stage 2.
 
-### Stage 2 -- stdio
+## Stage 2 -- stdio
 Starts off declaring a char buffer of size 4.
 
 Then, it [read](https://linux.die.net/man/3/read)s a value into the buffer:
@@ -303,7 +304,7 @@ Stage 2 clear!
 
 Sweet, made it past stage 2!
 
-### Stage 3 -- env
+## Stage 3 -- env
 
 Alright, now it's doing a `strcmp` on `\xca\xfe\xba\xbe` and the environment variable at `\xde\xad\xbe\xef`:
 
@@ -341,7 +342,7 @@ Stage 2 clear!
 Stage 3 clear!
 ```
 
-### Stage 4 -- file
+## Stage 4 -- file
 
 So it looks like it starts off reading a file named `\x0a`.
 * If it doesn't exist, quit.
@@ -366,7 +367,7 @@ with open('\x0a', 'w') as outfile:
 
 Then another `recvunil` for stage 4.
 
-### Stage 5 -- network
+## Stage 5 -- network
 
 See: [This cs.cmu.edu lecture on sockets](https://www.cs.cmu.edu/~srini/15-441/S10/lectures/r01-sockets.pdf).
 

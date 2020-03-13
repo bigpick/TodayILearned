@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Introduction to testing in Scala"
 excerpt: "Following along with the 'getting started with scala and sbt on the command line' from the Scala docs."
@@ -7,7 +8,7 @@ categories: [Scala]
 
 This follows the procedure mentioned in the [scala docs for getting started with testing scala from the command line](https://docs.scala-lang.org/getting-started/sbt-track/testing-scala-with-sbt-on-the-command-line.html).
 
-### Setup
+## Setup
 On the command line, create a new directory somewhere to work in.
 
 ```bash
@@ -53,7 +54,7 @@ sbt test
 
 But how did it know to run those tests? Well...
 
-### Understanding tests
+## Understanding tests
 Open up two files in a text editor:
 * `src/main/scala/CubeCalculator.scala`:
 
@@ -86,7 +87,7 @@ In the file `CubeCalculatorTest.scala`, you’ll see that we have a class named 
 * `CubeCalculator.cube(3) === 27` checks whether the output of the `cube` function is `27`.
   * The `===` is part of ScalaTest and provides clean error messages.
 
-### Adding another test case
+## Adding another test case
 Add another test block with its own assert statement that checks for the cube of 0:
 
 ```scala
@@ -116,5 +117,5 @@ Execute `sbt test` again. Note: similar to `~run`, we can also use `~test` to co
 ...
 ```
 
-### Conclusion
+## Conclusion
 You’ve seen one way to test your Scala code. You can learn more about ScalaTest’s FunSuite on the [official website](https://www.scalatest.org/getting_started_with_fun_suite). You can also check out other testing frameworks such as [ScalaCheck](https://www.scalacheck.org/) and [Specs2](https://etorreborre.github.io/specs2/).

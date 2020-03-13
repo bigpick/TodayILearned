@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Basic Binary Packing (UPX)"
 excerpt: "pwnable.kr challenge: flag"
@@ -10,7 +11,7 @@ categories: [pwn practice]
 > Download : http://pwnable.kr/bin/flag
 > This is reversing task. all you need is binary
 
-### Read
+## Read
 * This pretty lengthy [PDF on "Introduction to Reverse Engineering"](https://www.cs.tau.ac.il/~tromer/courses/infosec11/lecture9.pdf) from the Blavantik school of Computer Science, Tel Aviv University (kinda not great, but gives an intro at least)
 
 > Reverse engineering is the process of discovering the technological principles of a device, object, or system through analysis of its structure, function, and operation.
@@ -32,13 +33,13 @@ Also, the website for it: [here](https://beginners.re/).
 
 This is a pretty hefty book. Maybe will bookmark for later reading. Seems decent so far though.
 
-### Given
+## Given
 * The link to the binary to download -- `http://pwnable.kr/bin/flag`.
 
 We're told all this is needed, and that it's a reversing task. So... we'll need to reverse the compiled executable.
 
 
-### Download file
+## Download file
 
 ```bash
 wget http://pwnable.kr/bin/flag
@@ -46,7 +47,7 @@ wget http://pwnable.kr/bin/flag
 
 OK - we got a file named `flag` in our working dir now.
 
-### Look at the file
+## Look at the file
 
 ```bash
 ls -alrt flag
@@ -83,7 +84,7 @@ Hm, it really likes `UPX!`. That middle section gives us an idea of what that is
 In that link from google, there was also an example of UPX:
 > many public packers available on the internet, and most of them leave a very recognizable signature in the unpacking routine ... clear indication that we should look into unpacking UPX ...
 
-### Unpack UPX
+## Unpack UPX
 
 Looks like upx is pretty simple, and we can actually just download the unpacker of upx.
 
@@ -117,7 +118,7 @@ Options:
 
 Hm - `upx -d` seems like a good shot.
 
-### `upx -d` -- unpack UPX packed executable
+## `upx -d` -- unpack UPX packed executable
 
 Copied the executable into the container, then:
 
@@ -136,7 +137,7 @@ Unpacked 1 file.
 
 OK -- what about `strings` again?
 
-### `strings` -- now unpacked
+## `strings` -- now unpacked
 
 OK - this looks much more legible.
 

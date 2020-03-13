@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "Intro to ARM assembly"
 excerpt: "pwnable.kr challenge: leg (lol)"
@@ -13,7 +14,7 @@ categories: [pwn practice]
 >
 > ssh leg@pwnable.kr -p2222 (pw:guest)
 
-### Read
+## Read
 * [QEMU documentation](https://wiki.qemu.org/Documentation/Platforms/ARM) on ARM platforms.
 * [Wikipedia ARM page](https://en.wikipedia.org/wiki/ARM_architecture) (first response in google for "What is ARM")
 * [Androidcentral doc](https://www.androidcentral.com/what-arm-cpu) on what ARM is non-technically.
@@ -33,7 +34,7 @@ Neat.
 
 So, it seems like we'll need a special machine to run this ARM code.
 
-### Given
+## Given
 So for this, we're given two downloads, which look to be an executable and the c source code for that executable:
 * Executable -- `http://pwnable.kr/bin/leg.asm`
 * Source    -- `http://pwnable.kr/bin/leg.c`
@@ -41,7 +42,7 @@ So for this, we're given two downloads, which look to be an executable and the c
 And then a location of which the vulnerable program is currently running:
 * `ssh leg@pwnable.kr -p2222`
 
-### First, lets get on the box
+## First, lets get on the box
 
 ```
 ssh leg@pwnable.kr -p2222
@@ -86,7 +87,7 @@ Uncompressing Linux... done, booting the kernel.
 
 ...on a machine: `ARM-Versatile PB`? Quick google search yields [this](https://elinux.org/ARM_Versatile). So it's lools to be an ARM based machine that can run the linux kernel.
 
-### Look around
+## Look around
 
 It should behave like a normal Linux environment, one would think.
 
@@ -125,7 +126,7 @@ I have strong leg :P
 
 OK, so it seems like we need to give it some sort of magic input to get it to give us access to whatever is stored in the `flag` file.
 
-### Examine (given) source
+## Examine (given) source
 
 `leg.c`:
 
@@ -172,7 +173,7 @@ int main(){
 
 OK - four function program: main, key3, key2, and key1.
 
-### `main`
+## `main`
 
 Starts off declaring an integer `key` as 0.
 
@@ -184,11 +185,11 @@ Once it's done that, it checks if the sum ok key1(), key2(), and key3() are equa
 
 Then quit.
 
-### Takeaway
+## Takeaway
 
 Whatever we pass in at the user prompt needs to have an integer value equivalent to the three key function's outputs combined.
 
-### `key1()`
+## `key1()`
 
 ```c
 int key1(){
@@ -264,7 +265,7 @@ $r12 0x00000000  $sp 0xbefff7e0   $lr 0x00000000   $pc 0x00008054
 
 ![that-was-a-lie](https://i.kym-cdn.com/entries/icons/original/000/027/528/519.png){:height="60%" width="60%"}
 
-### SP points to different places depending on instruction mode!
+## SP points to different places depending on instruction mode!
 
 Instead, `R0` gets the value of `0x8058`, which is actually two instructions ahead (8 bytes) of where we broke at `0x8054 <_start> mov r0, pc`.
 
@@ -299,7 +300,7 @@ So, `key1()` will end up getting:
 '0x8ce4'
 ```
 
-### `key2()`
+## `key2()`
 
 ```c
 int key2(){
@@ -364,7 +365,7 @@ Then, we add `0x4` to it, and return that. So, `key2()` will be:
 '0x8d0c'
 ```
 
-### `key3()`
+## `key3()`
 
 Nice, back to one line:
 
@@ -406,7 +407,7 @@ Is where we're setting the return value equal to the link register. If we look a
 ...
 ```
 
-### Putting it all together
+## Putting it all together
 
 ```
 >>> (0x00008cdc+8) + (0x00008d04 + 4 + 4) + (0x00008d80)

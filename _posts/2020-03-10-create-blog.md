@@ -1,4 +1,5 @@
 ---
+author: george_pick
 layout: post
 title: "How to create this website!"
 excerpt: "A new website is born, another spec on the worldwide web..."
