@@ -17,7 +17,7 @@ SimpleJekyllSearch({
   searchInput: document.getElementById('search-input'),
   resultsContainer: document.getElementById('results-container'),
   json: '{{ site.url }}/search.json',
-  searchResultTemplate: '<li><a href="{url}">{title}</a></li>\n\t{excerpt}',
+  searchResultTemplate: '<li style="padding:10px"><a href="{url}">{title}</a><br>{excerpt}</li>',
   noResultsText: "No results found :(",
   fuzzy: true
 })
