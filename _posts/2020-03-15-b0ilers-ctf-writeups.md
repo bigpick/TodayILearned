@@ -19,7 +19,7 @@ These are writeups to challenges I solved for this CTF.
 ## Solved
 
 | Welcome Challenges    | Web     | Reverse Engineering     | Crypto    | PWN                               |
-| [Welcome](#welcome)   | [Welcome to Earth](#welcome-to-earth) | [Dank Engine](#dank-engine--100) | [Harvesting Season](#harvesting-season) | [Department of Flying Vehicles](#department-of-flying-vehicles) |
+| [Welcome](#welcome)   | [Welcome to Earth](#welcome-to-earth) | [Dank Engine](#dank-engine) | [Harvesting Season](#harvesting-season) | [Department of Flying Vehicles](#department-of-flying-vehicles) |
 | [Discord Flag](#discord-flag)| | [Chugga Chugga](#chugga-chugga) | | [Jumpdrive](#jumpdrive) |
 |---
 | | | | |
@@ -709,7 +709,7 @@ function check_action() {
 We can do the challenge, but it's clear that the flag is: `pctf{hey_boys_im_baaaaaaaaaack!}`.
 
 # REV
-## Dank Engine -- 100
+## Dank Engine
 > Stop! Get out! This challenge is for GAMERS ONLY.
 >
 > Oh? You ARE a gamers? Then welcome to the greatest game on earth!
