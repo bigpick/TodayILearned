@@ -1110,9 +1110,9 @@ Checking it's securities:
 ```python
 checksec dfv
 [*] Checking for new versions of pwntools
-    To disable this functionality, set the contents of /Users/georgepickering/.pwntools-cache-3.8/update to 'never'.
+    To disable this functionality, set the contents of /Users/gp/.pwntools-cache-3.8/update to 'never'.
 [*] You have the latest version of Pwntools (4.0.1)
-[*] '/Users/georgepickering/Downloads/dfv/dfv'
+[*] '/Users/gp/Downloads/dfv/dfv'
     Arch:     amd64-64-little
     RELRO:    Full RELRO
     Stack:    Canary found
