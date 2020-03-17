@@ -953,7 +953,7 @@ Flag is `pctf{s4d_chugg4_n01zez}`
 We're given a single JPEG file for this one. If you open it in your favorite photo previewer, it looks legitimate:
 
 &nbsp;
-![]({{ site.baseurl }}/img/fr3sh_h4rv3st.jpg)
+![]({{ site.baseurl }}/img/fr3sh_h4rv3st.jpg){:height="40%" width="40%"}
 &nbsp;
 
 Furthermore, if we inspect it's heading information, is has all the correct magic bits and JFIF/EXIF headers.
