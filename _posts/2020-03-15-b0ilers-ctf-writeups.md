@@ -21,6 +21,7 @@ These are writeups to challenges I solved for this CTF.
 | Welcome Challenges    | Web     | Reverse Engineering     | Crypto    | PWN                               |
 | [Welcome](#welcome)   | [Welcome to Earth](#welcome-to-earth) | [Dank Engine](#dank-engine) | [Harvesting Season](#harvesting-season) | [Department of Flying Vehicles](#department-of-flying-vehicles) |
 | [Discord Flag](#discord-flag)| | [Chugga Chugga](#chugga-chugga) | | [Jumpdrive](#jumpdrive) |
+| | | | | [Meshuggah 2.0](#meshuggah-20) |
 |---
 | | | | |
 
@@ -1309,3 +1310,199 @@ python jumpdrive_pwn.py
 ```
 
 Look at that! Flag is `pctf{pr1nTf_1z_4_St4R_m4p}`
+
+## Meshuggah 2.0
+
+> Dave escaped security, but only by crashing directly into an asteroid. Don't worry, he's still alive, but he's going to need a new starship
+>
+> `nc pwn.ctf.b01lers.com 1003`
+>
+> [79f51b8cb6279ce1c66a07a41560171d](https://storage.googleapis.com/b0ctf-deploy/meshuggah-2.tgz)
+
+Connecting to that endpoint, we get a menu prompt and then loop through 10 inputs until we lose:
+
+```
+Welcome to the Used Car Dealership, we hope you are ready for the insane savings ahead of you!
+Here are the first three starships which were purchased today for an incredible 90% savings. Each starship costs a mere 10 credits when on sale, but we only put one on sale at a time
+
+1. Meshuggah-1984971690
+2. Meshuggah-1342975563
+3. Meshuggah-868661324
+
+I don't even know how Meshuggah comes up with their model names, but I don't care because everyone buys them
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+Which model starship would you like to buy? 3
+Thats gonna be an expensive one... Glad you're buying from me! And please come back after that one breaks down.
+
+You have to be smarter with your money. We have sales to save you money, you shouldn't be buying these starships at full price. They're never worth it at that cost
+```
+
+To Cutter, we go. Decompiled main shows:
+
+&nbsp;
+![]({{ site.baseurl }}/img/meshuggah/meshug_main.png)
+&nbsp;
+
+So, it looks like it seeds a variable with `time(0)`, and then adds two to that, and uses it for the srand() seed, so really it is using `srand(time(2))` -- this is bad that we know the seed already.
+
+Continuing, it calls the list_previous_purchases() function, and then loops on some logic and buy_starship() calls.
+
+Over to decompiled buy_starship():
+
+
+&nbsp;
+![]({{ site.baseurl }}/img/meshuggah/meshug_buy_starship.png)
+&nbsp;
+
+We can see it's reading a random variable from the RNG (`var_10h._4_4_ = rand();`) and then comparing that value with our input.
+
+If they match, it only subtracts 10 from our credit line. Otherwise, it substracts 100.
+
+Back in main, we see it repeats while `0x5f` is less than the index counter, which is `95` in decimal. So, we have to get it right everytime, 92 times (since `var_ch` starts off at `4`, otherwise we lose (we start with 1000 creditline).
+
+They also gave us `libc.so.6` and `ld-linux-x86-64.so.2` files. This would contain the same version of rand they're using for the binary running behind that nc endpoint, I imagine. So, if we make our own "random" number generator in C using these same libraries, we should be able to test our code locally.
+
+We're also given the first three random numbers generated, in the form of the menu prompt, e.g:
+
+```
+...
+1. Meshuggah-409504990
+2. Meshuggah-117473336
+3. Meshuggah-1651333652
+...
+```
+
+We can see it generated for this run, `409504990`, `117473336`, and `1651333652` as the first three random numbers in the sequence. So, we can use the given Libs and a trivial local number generator in C to try to find a seed that produces the same first three ints as the challenge program. If so, its a good bet we found it, and will send the next 92 ints.
+
+`cat rng.c`:
+```c
+#include <stdio.h>
+#include <stdlib.h>
+/**
+ * Simple RNG to tests seeds fed from python
+ *
+ * Prints 95 entries to screen for python to parse
+ */
+int main(int argc, char *argv[]) {
+    int seed = atoi(argv[1]);
+    srand(seed);
+    for (int c = 0; c <= 95; c++) {
+        printf("%d ", rand());
+    }
+    return 0;
+}
+```
+Compiled using `gcc rng.c -o rng -Wl,--rpath=/root/meshuggah2 -Wl,--dynamic-linker=/root/meshuggah2/ld-linux-x86-64.so.2`, we can run it:
+
+```c
+./rng 69
+1526261789 2111371929 1850951614 1216657680 1987226204 1529169644 827673016 1782019092 106556683 671244173 260858112 292796684 332859512 75083764 1889521554 371409422 2119945217 1473300779 612274995 249435138 935235239 940462236 2007636835 1157531973 599120481 1079021575 1916606164 1963646032 648295204 124165213 1965077500 27073345 88053494 1668545466 1243731025 2075279698 1050231463 2071404041 1709815142 1156788146 595164566 1970673254 1449584830 928024079 2045757019 1191622736 1299433501 2018218588 517439868 1911708497 120170078 1452675107 704687085 2127806913 462723432 1303807566 1059344840 231845949 1119969951 1707640044 356011162 937563803 1734713389 444064656 458625621 830960766 371860706 1508857084 754881159 2081675849 518161582 1350045725 1904865455 1967746413 130586156 1803138826 1011885501 1430019658 1673873766 1529325369 1194244507 1794043844 834516829 1898931592 1774367109 1297240261 1055255510 686228301 1529086210 27741813 246384697 1885097372 965305616 1981098086 181678380 1423931238 root@5b21c713c823
+```
+
+I could not get it to link/use the provided libraries in OSX using clang and trying to link to them at runtime. Instead, I just switched to an Ubuntu container and built it with `gcc` and linked to the local libs at compile time.
+
+OK - now we need to wrap this around a python script that get's the three generated numbers from the program, then tries a bunch of close seeds until we get a match.
+
+```python
+#!/usr/bin/env python
+import random
+import re
+import time
+import subprocess
+from subprocess import PIPE
+
+from pwn import *
+
+context.bits= '64'
+context.endian= 'little'
+context.log_level = 'debug'
+
+conn = remote('pwn.ctf.b01lers.com', 1003)
+
+generated_randoms = []
+delta = 0
+seed = int(time.time()) + 2
+
+stdout = conn.recvuntil("would you like to buy? ")
+model = re.compile(b'Meshuggah-[0-9]+')
+first_three_rands = [int(x[10:].decode("utf-8")) for x in model.findall(stdout)]
+print(first_three_rands)
+
+while len([i for i, j in zip(first_three_rands, generated_randoms[:3]) if i == j]) != 3:
+    # Try new seeds, +1 -1, +2 -2, +3 -3, etc...
+    if delta == 0:
+        print(f"LD_LIBRARY_PATH=/root/meshuggah2 ./rng {seed}")
+        generated_randoms = subprocess.run([f"./rng {seed}"], shell=True, stdout=PIPE).stdout.decode("utf-8").split()
+        generated_randoms = list(map(int, generated_randoms))
+        print(len([i for i, j in zip(first_three_rands, generated_randoms[:3]) if i == j]))
+    else:
+        generated_randoms = subprocess.run([f"./rng {seed+delta}"], shell=True, stdout=PIPE).stdout.decode("utf-8").split()
+        generated_randoms = list(map(int, generated_randoms))
+        print(len([i for i, j in zip(first_three_rands, generated_randoms[:3]) if i == j]))
+        if len([i for i, j in zip(first_three_rands, generated_randoms[:3]) if i == j]) == 3:
+            break
+        generated_randoms = subprocess.run([f"./rng {seed-delta}"], shell=True, stdout=PIPE).stdout.decode("utf-8").split()
+        generated_randoms = list(map(int, generated_randoms))
+    delta += 1
+
+# Send our data now that we have found one that matches the first 3 entries
+for i in range(3, 95):
+    conn.sendline(str(generated_randoms[i]))
+    if i != 94:
+        conn.recvuntil("would you like to buy? ")
+
+# Pwntools way to just receive arbitrary amount of lines
+while 1<2:
+    try:
+        print(conn.recvlineS())
+    except EOFError as e:
+        print()
+        break
+```
+If we run that, we see every iteration we're getting the success message `You're a smart one, picking the one on sale!`, up until we get the flag:
+
+```
+...
+[DEBUG] Received 0x2c bytes:
+    b"You're a smart one, picking the one on sale!"
+[DEBUG] Received 0x2e bytes:
+    b'\n'
+    b'\n'
+    b'Which model starship would you like to buy? '
+[DEBUG] Sent 0xb bytes:
+    b'1462234739\n'
+[DEBUG] Received 0x2c bytes:
+    b"You're a smart one, picking the one on sale!"
+[DEBUG] Received 0x66 bytes:
+    b'\n'
+    b'pctf{Un4uT40r1z3d_uS3r_Up_1N_my_Gr1ll!_y0u_tRy1ng_to_h4cK_My_c4tCh_a_R1111de??_Unc00l_br0_Unc0o0ol!}\n'
+```
+
+Flag is `pctf{Un4uT40r1z3d_uS3r_Up_1N_my_Gr1ll!_y0u_tRy1ng_to_h4cK_My_c4tCh_a_R1111de??_Unc00l_br0_Unc0o0ol!}`.
