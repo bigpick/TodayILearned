@@ -139,11 +139,15 @@ Letting that run, after about 10 minutes we get the flag produced: `F#{us1ng-X0r
 >
 > Port: 31085
 
+![]({{ site.baseurl }}/img/fireshell/dungeon_menu.png){:height="60%" width="60%"}
+
 Another game. This time, we have to escape from a prison. In order to win, we need to succesfully identify the shortest path out of a given maze, a bunch of times in a row.
 
 The issue, we're given about 2 seconds to give an answer, before we're timed out. So defintely not doable manually, even for the first (easiest) one.
 
-This reminded me of something we learned in university, but I couldn't think of what it was right away. After a bit of fiddling, I remembered what it was: [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
+![]({{ site.baseurl }}/img/fireshell/dungeon_timedout.png){:height="30%" width="30%"}
+
+This task reminded me of something we learned in university in an Algorithms/Data structures class, but I couldn't think of what it was right away. After a bit of fiddling, I remembered what it was: [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
 > ... finding the shortest paths between nodes in a graph ...
 
 In this case, our "nodes" are the doors, and our paths are given to us.
