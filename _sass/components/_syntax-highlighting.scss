@@ -49,9 +49,9 @@ pre code {
     &::before {
       content: attr(data-lang);
       position: absolute;
+      color: #6272a4;
       top: 0;
       right: 0;
-      color: #ccc;
       text-align: right;
       text-transform: uppercase;
       font-size: 0.85em;
