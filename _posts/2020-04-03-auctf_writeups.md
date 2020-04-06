@@ -5,6 +5,14 @@ title: "Auburn University: AUCTF 2020"
 excerpt: "Writeups for various challenges I solved during the 2020 AUCTF capture the flag competition."
 categories: [Capture The Flag]
 ---
+| Forensics | Password Cracking | Crypto | Trivia | Bash | Web | Signals | Reversing | OSINT | Sequence |
+| [Fahrenheit 451](#fahrenheit-451) | [Crack Me](#crack-me) | [Pretty Ridiculous](#pretty-ridiculous) | | [BASH 1](#bash-1) | [Miyazaki Trivia](#miyazaki-trivia) | [FCC Hunter](#fcc-hunter) | [Sora](#sora) | [Who Made Me](#who-made-me) | [Prime Rib](#prime-rib) |
+| [Har Har Har](#har-har-har) |  [Salty](#salty) | [Land Locked](#land-locked) | | [BASH 2](#bash-2) | | | [Mr. Game and Watch](#mr-game-and-watch) | | |
+| | [Zippy](#zippy) | [I'll Have The Salad](#ill-have-the-salad) | | [BASH 3](#bash-3) | | | [Cracker Barrel](#cracker-barrel) | | |
+| | | | | [BASH 4](#bash-4) | | | [mobile0](#mobile0) | | |
+| | | | | | | | [mobile1](#mobile1) | | |
+|---
+| | | | | | | | | | |
 
 # Forensics
 ## Fahrenheit 451
