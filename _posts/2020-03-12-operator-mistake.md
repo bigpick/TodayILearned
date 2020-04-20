@@ -283,7 +283,7 @@ Use parenthesis people!!!
 
 ## pwntools script
 
-See the code [here](https://github.com/bigpick/pwnable.kr/blob/master/toddlersbottle/09_mistake_code/mistake_pwn.py). Results:
+See the code [here](https://github.com/bigpick/CaptureTheFlagCode/blob/master/practice/pwnable.kr/toddlersbottle/09_mistake_code/mistake_pwn.py). Results:
 
 ```
 python mistake_pwn.py

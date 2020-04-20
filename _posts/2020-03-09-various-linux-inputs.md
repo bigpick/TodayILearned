@@ -529,4 +529,4 @@ Mommy! I learned how to pass various input in Linux :)
 
 Woo! Flag is `Mommy! I learned how to pass various input in Linux :)`.
 
-For this code, see my [Git repo](https://github.com/bigpick/pwnable.kr) for pwnable.kr practice code.
+For this code, see my [CTF practice Git repo](https://github.com/bigpick/CaptureTheFlagCode/blob/master/practice/pwnable.kr/toddlersbottle/07_input_code/input_pwn.py) for this pwnable.kr code.
