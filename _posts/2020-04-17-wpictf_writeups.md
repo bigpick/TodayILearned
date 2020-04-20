@@ -82,7 +82,7 @@ Going to that website, we see a page that has some placeholder code that we can 
 This reminds me of a challenge that was in a previous CTF I did recently, where we could [include the flag file and the "C compiler program" would spit out the contents of that file](https://bigpick.github.io/TodayILearned/articles/2020-03/fireshell-ctf-writeups#caas). We can try that here, since we get a path of the flag in the problem description:
 
 &nbsp;
-![]({{ site.baseurl }}/img/wpi2020/autograder.png)
+![]({{ site.baseurl }}/img/wpi2020/autograder_flag.png)
 &nbsp;
 
 Flag is `WPI{D0nt_run_as_r00t}`.
