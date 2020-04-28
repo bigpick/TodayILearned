@@ -6,19 +6,24 @@ permalink: /archive/
 
 <div class="archive">
   <div class="timeline" id="timeline">
-    {% assign posts_by_year = site.posts | group_by_exp:"post", "post.date | date: '%Y' " %}
-    {% for group in posts_by_year %}
-      <div class="archive-title">
-        <h4 class="archive-year">{{ group.name }}</h4>
-      </div>
+    {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+    {% for year in postsByYear %}
+        <div class="archive-title">
+            <h1 class="archive-year">{{ year.name }}</h4>
+        </div>
+      {% assign postsByMonth = year.items | group_by_exp:"post", "post.date | date: '%B'" %}
 
-      <ul>
-      {% for post in group.items %}
-        <li><div style="width:60px;float:left;">{{ post.date | date: "%b %-d" }}</div> <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>
+      {% for month in postsByMonth %}
+        <div class="archive-title">
+          <h4 class="archive-month">{{ month.name }}</h4>
+        </div>
+        <ul>
+          {% for post in month.items %}
+            <li><div style="width:80px;float:left;padding-left:20px;">{{ post.date | date: "%b %-d" }}</div> <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>
+          {% endfor %}
+        </ul>
+
       {% endfor %}
-      </ul>
-
     {% endfor %}
   </div>
-
 </div>

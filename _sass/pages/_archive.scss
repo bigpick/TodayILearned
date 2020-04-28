@@ -23,12 +23,28 @@
     .archive-year {
       margin-left: 1em;
       &:before {
-        content: " ";
+        content: "";
         position: absolute;
         left: 0;
         top: 50%;
         margin-left: -4px;
         margin-top: -4px;
+        width: 8px;
+        height: 8px;
+        background: $info;
+        border-radius: 50%;
+      }
+    }
+    .archive-month {
+      margin-left: 2em;
+      color: $info;
+      &:before {
+        content: " ";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-left: -4px;
+        margin-top: -2px;
         width: 8px;
         height: 8px;
         background: $info;
