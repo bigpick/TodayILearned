@@ -2,5 +2,5 @@
 
 label: Ability
 id : cs
-aspects: Learning, Bash, Java, Scala, SecOps, Python
-percentage: 80, 60, 45, 30, 25, 60
+aspects: Learning, Bash, Java, Scala, SecOps, Python, CSS
+percentage: 80, 70, 45, 25, 45, 65, 30
