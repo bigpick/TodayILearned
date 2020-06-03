@@ -13,7 +13,7 @@ categories: [Capture The Flag]
 
 These are writeups to challenges I solved for this CTF. We as a team did pretty good this week again - top 10 finish! Thanks to Datajerk for kicking pwn ass as usual, Dobs for his reversing skills, and Redjohn for being my Jedi master and helping with the ways of the ~~force~~ web.
 
-| [Crypto](#crypto) | [Misc](#misc) | Reversing | Web | Forensics | Coding |
+| [Crypto](#crypto) | [Misc](#misc) | [Reversing](#reversing) | [Web](#web) | [Forensics](#forensics) | [Coding](#coding) |
 |--------|------|-----------|-----|-----------|--------|
 | [Goose Chase](#goose-chase) | [GIF](#gif) | [XoR](#xor)| [Car Lottery](#car-lottery) | [Manipulation](#manipulation) | [Arithmetics](#arithmetics)|
 | [One Trick Pony](#one-trick-pony) | [Password Crack 1](#password-crack-1) | | [Quiz](#quiz) | [Leftovers](#leftovers) | [Glitchity Glitch](#glitchity-glitch) |
