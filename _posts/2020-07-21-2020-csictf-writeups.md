@@ -201,7 +201,7 @@ This is followed by `... UKW $ Gamma …` which is:
 
 So, it seems that we're going to be working with the _Gamma_ form.
 
-Following that, we have a set of numbers, separated by dollar signs. These seem to be the positions and rings at which to set the four motors (Gamma, and the remaining three). However, as the message points out, we've some (key) information: What coding wheels these are actually settings for!
+Following that, we have a set of numbers, separated by dollar signs. These seem to be the positions and rings at which to set the four rotors (Gamma, and the remaining three). However, as the message points out, we've some (key) information: What coding wheels these are actually settings for!
 
 > … It was supplied with 8 different coding wheels, (marked I to VIII), three of which were in the machine at any given time …
 
