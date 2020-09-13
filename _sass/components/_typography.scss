@@ -81,9 +81,9 @@ hr {
 // Text Styles
 //
 
-em { font-style: italic; }
+em, .em { font-style: italic; }
 
-strong { font-weight: 600; }
+strong, .strong { font-weight: 600; }
 
 small,
 .small {
@@ -95,4 +95,13 @@ p {
   margin: 1.2em 0;
   word-spacing: 0.05em;
   line-height: 1.6em;
+}
+
+.img-caption {
+  text-align: center;
+  font-size: $font-size-h6;
+  margin: ($font-size-h6 / -1.5) 0 ($font-size-h6 / 2.5) 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-style: italic;
 }
