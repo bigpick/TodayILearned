@@ -5,14 +5,15 @@
 
 pre, code {
   font-family: $font-family-monospace;
-  color: #6272a4;
+  //color: #6272a4;
+  color: #f8f8f2;
   font-size: 0.9em;
   background-color: #282a36;
   font-size: ($font-size-base - 2);
 }
 code {
   color: #f8f8f2;
-  padding: .2em;
+  padding: .1em;
   border-radius: 2px;
   white-space: nowrap;
 }
@@ -45,7 +46,8 @@ pre code {
     position: relative;
   }
   pre code {
-    color: #6272a4;
+    //color: #6272a4;
+    color: #f8f8f2;
     &::before {
       content: attr(data-lang);
       position: absolute;
