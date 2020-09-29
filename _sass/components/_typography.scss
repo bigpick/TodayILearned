@@ -2,6 +2,34 @@
    Typography
    ========================================================================== */
 
+/* ============ Fonts ============ */
+/* === Victor Mono - Regular === */
+@font-face {
+    font-family: 'Victor Mono';
+    font-style: normal;
+    font-weight: 900;
+    src: url('../../assets/fonts/VictorMono-SemiBold.eot'); /* IE9 Compat Modes */
+    src: local('Victor Mono Regular'), local('VictorMono-SemiBold'),
+         url('../../assets/fonts/VictorMono-SemiBold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../../assets/fonts/VictorMono-SemiBold.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../../assets/fonts/VictorMono-SemiBold.woff') format('woff'), /* Modern Browsers */
+         url('../../assets/fonts/VictorMono-SemiBold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../../assets/fonts/VictorMono-SemiBold.svg#VictorMono-SemiBold') format('svg'); /* Legacy iOS */
+}
+/* ====  IBM Plex Sans Condensed ==== */
+/* ===  IBM Plex Sans Condensed - ExtraLight === */
+@font-face {
+    font-family: 'IBM Plex Sans Condensed';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../assets/fonts/IBMPlexSansCondensed-ExtraLight.eot');                                    /* IE9 Compat Modes */
+    src: local('IBM Plex Sans Condensed'), local('IBMPlexSansCondensed-ExtraLight'),
+         url('../../assets/fonts/IBMPlexSansCondensed-ExtraLight.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../../assets/fonts/IBMPlexSansCondensed-ExtraLight.woff2') format('woff2'),                  /* Super Modern Browsers */
+         url('../../assets/fonts/IBMPlexSansCondensed-ExtraLight.woff') format('woff'),                    /* Modern Browsers */
+         url('../../assets/fonts/IBMPlexSansCondensed-ExtraLight.ttf') format('truetype'),                 /* Safari, Android, iOS */
+}
+
 //
 // Global
 //
