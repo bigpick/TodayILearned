@@ -46,7 +46,8 @@ section.post {
 
 // Post title
 .post-title {
-
+  font-family: "Victor Mono SemiBold";
+  font-size: $font-size-base * 1.5;
 }
 
 .post-title-link {
@@ -99,6 +100,7 @@ a.read-more {
 #post {
   padding-bottom: 50px;
   .post-header {
+    font-family: "Victor Mono SemiBold";
     margin: 0 auto 50px;
   }
 }

@@ -16,6 +16,18 @@
          url('../../fonts/VictorMono-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
          url('../../fonts/VictorMono-Regular.svg#VictorMono-Regular') format('svg'); /* Legacy iOS */
 }
+@font-face {
+    font-family: 'Victor Mono SemiBold';
+    font-style: normal;
+    font-weight: 900;
+    src: url('../../fonts/VictorMono-SemiBold.eot'); /* IE9 Compat Modes */
+    src: local('Victor Mono SemiBold'), local('VictorMono-SemiBold'),
+         url('../../fonts/VictorMonoSemiBold/VictorMono-SemiBold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../../fonts/VictorMonoSemiBold/VictorMono-SemiBold.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../../fonts/VictorMonoSemiBold/VictorMono-SemiBold.woff') format('woff'), /* Modern Browsers */
+         url('../../fonts/VictorMonoSemiBold/VictorMono-SemiBold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../../fonts/VictorMonoSemiBold/VictorMono-SemiBold.svg#VictorMono-SemiBold') format('svg'); /* Legacy iOS */
+}
 /* ====  IBM Plex Sans Condensed ==== */
 /* ===  IBM Plex Sans Condensed - Regular === */
 @font-face {

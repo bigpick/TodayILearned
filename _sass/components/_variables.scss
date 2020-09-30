@@ -4,6 +4,7 @@
 
 // Google font import
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:600,400,400italic|Roboto+Mono);
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400&display=swap');
 
 // Custom variables
 
@@ -22,7 +23,7 @@ $border-width:               .0625rem !default;
 // Font, line-height, and color for body text, headings, and more.
 
 $font-family-sans-serif:     "IBM Plex Sans Condensed", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$font-family-serif:          Georgia, "Times New Roman", Times, serif !default;
+$font-family-serif:          Georgia, "IBM Plex Serif", "Times New Roman", Times, serif !default;
 $font-family-monospace:      "Victor Mono", "Roboto Mono", "Courier New", monospace !default;
 $font-family-base:           $font-family-sans-serif !default;
 
