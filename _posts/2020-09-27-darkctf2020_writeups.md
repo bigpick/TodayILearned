@@ -38,16 +38,19 @@ drwx------ 2 wolfie wolfie 4096 Sep 27 06:14 .cache
 -rw-rw-r-- 1 wolfie wolfie    0 Sep 27 11:57 .bashrc
 drwxr-xr-x 1 wolfie wolfie 4096 Sep 27 11:57 .
 -rw------- 1 wolfie wolfie 5256 Sep 29 12:45 .bash_history
+
 wolfie@9ad161dbc9ce:~$ ls -alrt bin/
 total 12
 lrwxrwxrwx 1 root   root      8 Sep 25 19:14 cat -> /bin/cat
 drwxr-xr-x 1 root   root   4096 Sep 25 19:14 .
 drwxr-xr-x 1 wolfie wolfie 4096 Sep 27 11:57 ..
+
 wolfie@9ad161dbc9ce:~$ ls -alrt imp/
 total 16
 -rw-r--r-- 1 root   root     36 Sep 24 06:55 flag.txt
 drwxr-xr-x 1 root   root   4096 Sep 25 19:14 .
 drwxr-xr-x 1 wolfie wolfie 4096 Sep 27 11:57 ..
+
 wolfie@9ad161dbc9ce:~$ cat imp/flag.txt
 darkCTF{h0pe_y0u_used_intended_w4y}
 {% endhighlight %}

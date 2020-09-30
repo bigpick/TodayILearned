@@ -5,10 +5,13 @@
 
 pre, code {
   font-family: $font-family-monospace;
-  //color: #6272a4;
   color: #f8f8f2;
   background-color: #282a36;
-  font-size: ($font-size-base + .15);
+  font-size: ($font-size-base - 2.3);
+  -webkit-text-stroke: 0.013em;
+  webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
 }
 code {
   color: #f8f8f2;
